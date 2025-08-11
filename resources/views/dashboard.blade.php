@@ -13,7 +13,7 @@
                         </div>
                     </div>
                 </div>
-            @endif 
+            @endif
             <div class="col-md-3 mb-4">
                 <div class="card h-100 text-center" onclick="window.location.href='{{ route('ver.eleicoes') }}';" style="cursor:pointer;">
                     <div class="card-body d-flex flex-column justify-content-center">
@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="col-md-3 mb-4">
-                <div class="card h-100 text-center" onclick="showScreen('votarScreen')" style="cursor: pointer;">
+                <div class="card h-100 text-center" onclick="window.location.href='{{route('ver.eleicao.ativa')}}'" style="cursor: pointer;">
                     <div class="card-body d-flex flex-column justify-content-center">
                         <i class="fas fa-vote-yea fa-4x text-warning mb-3"></i>
                         <h5>Votar</h5>
