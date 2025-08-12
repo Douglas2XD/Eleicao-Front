@@ -3,7 +3,7 @@
 @section('content')
     <div id="menuScreen" class="screen">
         <div class="row">
-            @if(auth()->check() && auth()->user()->admin)
+            @if(session('eleitor'))
                <div class="col-md-3 mb-4" onclick="window.location.href='{{ route('criar.eleicao') }}';" style="cursor:pointer;">
                     <div class="card h-100 text-center" onclick="showScreen('criarEleicaoScreen')" style="cursor: pointer;">
                         <div class="card-body d-flex flex-column justify-content-center">

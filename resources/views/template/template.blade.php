@@ -18,7 +18,7 @@
             <i class="fas fa-vote-yea me-2"></i>URNA IFRN
         </a>
         <div class="navbar-nav ms-auto">
-            <button class="btn btn-outline-light btn-sm" onclick="logout()">
+            <button class="btn btn-outline-light btn-sm" onclick="window.location.href='{{ route('eleitor.logout') }}'">
                 <i class="fas fa-sign-out-alt me-1"></i>Sair
             </button>
         </div>

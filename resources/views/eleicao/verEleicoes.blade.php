@@ -22,32 +22,17 @@
                             </p>
                             <div class="d-flex gap-2">
                                 <button class="btn btn-sm btn-outline-primary">Ver Detalhes</button>
-                                <button class="btn btn-sm btn-primary" onclick="window.location.href='{{ route('ver.resultado') }}';" style="cursor:pointer;">Ver Resultado</button>
+                                <button class="btn btn-sm btn-primary" onclick="window.location.href='{{ route('ver.resultado', ['id' => 2]) }}';" style="cursor:pointer;">Ver Resultado</button>
                                 @if(auth()->check() && auth()->user()->admin)
                                     <button class="btn btn-sm btn-outline-secondary">Modificar Eleição</button>
-                                @endif 
+                                @endif
                             </div>
-                            
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Eleição Diretoria Estudantil</h5>
-                            <p class="card-text text-muted">
-                                <i class="fas fa-calendar me-2"></i>01/02/2024 - 05/02/2024<br>
-                                <i class="fas fa-users me-2"></i>3 candidatos
-                            </p>
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-sm btn-outline-primary">Ver Detalhes</button>
-                                <button class="btn btn-sm btn-primary">Ver Resultado</button>
-                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>    
+</div>
 @endsection
