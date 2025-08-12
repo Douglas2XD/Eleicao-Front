@@ -20,7 +20,7 @@
                             <h2 class="text-primary">1,247</h2>
                         </div>
                     </div>
-                </div>
+                </div> 
                 <div class="col-md-6">
                     <div class="card bg-light">
                         <div class="card-body text-center">
