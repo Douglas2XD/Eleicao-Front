@@ -2,71 +2,85 @@
 
 @section('content')
 
-<div id="resultadoScreen" class="screen">
-    <div class="card">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3><i class="fas fa-chart-bar me-2"></i>Resultado - Eleição Presidencial 2024</h3>
-                <button class="btn btn-secondary" onclick="window.location.href='{{ url('/dashboard') }}';" style="cursor:pointer;">
-                    <i class="fas fa-arrow-left me-2"></i>Voltar
-                </button>
-            </div>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+    }
+    .progress {
+        height: 30px;
+        border-radius: 5px;
+    }
+    .badge-eleito {
+        background-color: #00a650;
+        color: white;
+    }
+    .foto-circular {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    .barra-votos {
+        height: 10px;
+        border-radius: 5px;
+    }
+</style>
 
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <div class="card bg-light">
-                        <div class="card-body text-center">
-                            <h5 class="text-muted">Total de Votos</h5>
-                            <h2 class="text-primary">1,247</h2>
-                        </div>
-                    </div>
-                </div> 
-                <div class="col-md-6">
-                    <div class="card bg-light">
-                        <div class="card-body text-center">
-                            <h5 class="text-muted">Participação</h5>
-                            <h2 class="text-success">87%</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <h5 class="mb-3">Resultado por Candidato:</h5>
 
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <div class="card border-success">
-                        <div class="card-body text-center">
-                            <i class="fas fa-crown fa-2x text-warning mb-2"></i>
-                            <h5 class="card-title">João Silva</h5>
-                            <h3 class="text-success">45%</h3>
-                            <p class="text-muted">561 votos</p>
-                            <span class="badge bg-success">VENCEDOR</span>
-                        </div>
+<h1 class="text-center">Resultado Eleição</h1>
+
+<ul class="nav nav-tabs mt-4">
+    <li class="nav-item">
+        <a class="nav-link active" href="#">Resultado</a>
+    </li>
+</ul>
+
+<h4 class="mt-4">Candidatos</h4>
+
+<div class="mb-4">
+    @php
+        $totalVotos = array_sum(array_column($dados['concorrentes'], 'total_votos'));
+    @endphp
+
+    @foreach($dados['concorrentes'] as $candidato)
+        @php
+            $percentual = ($candidato['total_votos'] / $totalVotos) * 100;
+            $classeBarra = $candidato['id_candidato'] == $dados['vencedor']['id_candidato'] ? 'bg-success' : 'bg-secondary';
+        @endphp
+
+        <div class="media mb-3">
+            <img src="https://cdn-icons-png.freepik.com/512/21/21294.png" class="foto-circular mr-3" alt="{{ $candidato['nome'] }}">
+            <div class="media-body">
+                <h5 class="mt-0">{{ $candidato['nome'] }}</h5>
+                <p>Idade: {{ $candidato['idade'] }}
+                    @if($candidato['id_candidato'] == $dados['vencedor']['id_candidato'])
+                        <span class="badge badge-eleito">ELEITO</span>
+                    @endif
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>{{ number_format($percentual, 2) }}%</strong><br>
+                        {{ $candidato['total_votos'] }} votos
                     </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <i class="fas fa-user-circle fa-2x text-primary mb-2"></i>
-                            <h5 class="card-title">Maria Santos</h5>
-                            <h3 class="text-primary">32%</h3>
-                            <p class="text-muted">399 votos</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <i class="fas fa-user-circle fa-2x text-secondary mb-2"></i>
-                            <h5 class="card-title">Pedro Oliveira</h5>
-                            <h3 class="text-secondary">23%</h3>
-                            <p class="text-muted">287 votos</p>
+                    <div class="barra-votos col-8">
+                        <div class="progress">
+                            <div class="progress-bar {{ $classeBarra }}" role="progressbar" style="width: {{ $percentual }}%;" aria-valuenow="{{ $percentual }}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endforeach
+    <br><br><br><br>
 </div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
 @endsection

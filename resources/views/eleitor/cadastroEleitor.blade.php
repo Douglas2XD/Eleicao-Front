@@ -1,4 +1,14 @@
 <div class="container my-5">
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card shadow">
@@ -6,7 +16,8 @@
                     <h3 class="card-title mb-0">Cadastro de Eleitor</h3>
                 </div>
                 <div class="card-body">
-                    <form id="eleitorForm">
+                    <form id="eleitorForm" method="POST" action="{{ route('eleitor.salvar') }}">
+                        @csrf
                         <!-- Dados Pessoais -->
                         <h5 class="text-primary mb-3">Dados Pessoais</h5>
 
@@ -66,9 +77,7 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('js/client.js') }}"></script>
 <script>
-    let vinculoCounter = 0;
 
     // Simulação de cursos cadastrados (em um caso real, isso viria de uma API)
     const cursosDisponiveis = [{
@@ -92,105 +101,4 @@
             nome: "Redes de Computadores"
         }
     ];
-
-    function adicionarVinculo() {
-        vinculoCounter++;
-        const container = document.getElementById('vinculosContainer');
-
-        const vinculoDiv = document.createElement('div');
-        vinculoDiv.className = 'card mb-3';
-        vinculoDiv.id = `vinculo-${vinculoCounter}`;
-
-        let cursosOptions = '<option value="">Selecione o curso</option>';
-        cursosDisponiveis.forEach(curso => {
-            cursosOptions += `<option value="${curso.id}">${curso.nome}</option>`;
-        });
-
-        vinculoDiv.innerHTML = `
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <span class="fw-bold">Vínculo #${vinculoCounter}</span>
-        <button type="button" class="btn btn-outline-danger btn-sm" onclick="removerVinculo(${vinculoCounter})">
-            Remover
-        </button>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-4">
-                <label for="matricula-${vinculoCounter}" class="form-label">Matrícula <span
-                        class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="matricula-${vinculoCounter}"
-                    name="vinculos[${vinculoCounter}][matricula]" required>
-            </div>
-            <div class="col-md-4">
-                <label for="tipo-${vinculoCounter}" class="form-label">Tipo de Vínculo <span
-                        class="text-danger">*</span></label>
-                <select class="form-select" id="tipo-${vinculoCounter}" name="vinculos[${vinculoCounter}][tipo]"
-                    required>
-                    <option value="">Selecione o tipo</option>
-                    <option value="DISCENTE">Discente</option>
-                    <option value="DOCENTE">Docente</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label for="curso-${vinculoCounter}" class="form-label">Curso <span
-                        class="text-danger">*</span></label>
-                <select class="form-select" id="curso-${vinculoCounter}" name="vinculos[${vinculoCounter}][curso_id]"
-                    required>
-                    ${cursosOptions}
-                </select>
-            </div>
-        </div>
-    </div>
-    `;
-
-        container.appendChild(vinculoDiv);
-    }
-
-    function removerVinculo(id) {
-        const vinculo = document.getElementById(`vinculo-${id}`);
-        if (vinculo) {
-            vinculo.remove();
-        }
-        vinculoCounter--;
-    }
-
-    // Máscara para CPF
-    document.getElementById('cpf').addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length >= 11) {
-            value = value.substring(0, 11);
-        }
-        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-        e.target.value = value;
-    });
-
-    // Adicionar um vínculo por padrão
-    document.addEventListener('DOMContentLoaded', function() {
-        adicionarVinculo();
-    });
-
-    // Validação e submissão do formulário
-    document.getElementById('eleitorForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        // Aqui você pode adicionar a lógica para enviar os dados para o backend
-        const formData = new FormData(this);
-        const data = {};
-
-        // Processar dados básicos
-        data.nome = formData.get('nome');
-        data.email = formData.get('email');
-        data.cpf = formData.get('cpf').replace(/\D/g, ''); // Remove formatação
-        data.data_nascimento = formData.get('data_nascimento');
-        data.status = formData.get('status');
-        data.vinculos = [];
-        pessoa = pegarPessoa(data.cpf)
-        data.id = pessoa.id
-        salvarEleitor(data);
-
-        console.log('Dados do eleitor:', data);
-        alert('Formulário validado com sucesso! Verifique o console para ver os dados.');
-    });
 </script>

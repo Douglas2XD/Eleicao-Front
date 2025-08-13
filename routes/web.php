@@ -8,7 +8,7 @@ Route::get('/', function() {
     return view('welcome');
 })->name('eleitor.registrar');
 
-Route::post('/eleitor/registrar', [IndexController::class, 'registrarEleitor'])->name('eleitor.registrar');
+Route::post('/eleitor/registrar', [IndexController::class, 'registrarEleitor'])->name('eleitor.salvar');
 
 Route::get('/eleitor/login', function() {
     return view('welcome');

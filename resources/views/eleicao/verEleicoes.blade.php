@@ -15,9 +15,9 @@
                 <div class="col-md-6 mb-3">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Eleição Presidencial 2024</h5>
+                            <h5 class="card-title">Eleição Professores 2025</h5>
                             <p class="card-text text-muted">
-                                <i class="fas fa-calendar me-2"></i>15/03/2024 - 20/03/2024<br>
+                                <i class="fas fa-calendar me-2"></i>15/03/2025 - 20/03/2025<br>
                                 <i class="fas fa-users me-2"></i>5 candidatos
                             </p>
                             <div class="d-flex gap-2">
@@ -28,21 +28,6 @@
                                 @endif 
                             </div>
                             
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Eleição Diretoria Estudantil</h5>
-                            <p class="card-text text-muted">
-                                <i class="fas fa-calendar me-2"></i>01/02/2024 - 05/02/2024<br>
-                                <i class="fas fa-users me-2"></i>3 candidatos
-                            </p>
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-sm btn-outline-primary">Ver Detalhes</button>
-                                <button class="btn btn-sm btn-primary">Ver Resultado</button>
-                            </div>
                         </div>
                     </div>
                 </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Http;
 
 class IndexController extends Controller
 {
@@ -17,25 +18,47 @@ class IndexController extends Controller
     }
 
     public function resultado(){
-        return view('eleicao.resultadoEleicao');
+        $url = 'http://127.0.0.1:8081/eleicao/ver-resultado/2';
+
+        $response = Http::get($url);
+        if ($response->successful()) {
+            $dados = $response->json();
+            return view('eleicao.resultadoEleicao', compact('dados'));
+        }
+
+        # return view('eleicao.resultadoEleicao',compact('response'));
     }
 
     public function verEleicaoAtiva(){
         return view('eleicao.eleicaoAtiva');
     }
-
+    
     public function registrarEleitor(Request $request){
-        $cpfJson = json_encode($request->cpf);
-        $request->id = shell_exec("node /public/js/buscar-id-por-cpf.js '" . escapeshellarg($cpfJson) . "'");
-
-        $eleitorJson = json_encode($request->all());
-        // Chama o script Node.js passando os dados do eleitor
-        $output = shell_exec("node /public/js/client.js '" . escapeshellarg($eleitorJson) . "'");
-
-        return response()->json([
-            'message' => 'Eleitor salvo',
-            'grpc_response' => $output,
+        // 1 - Buscar pessoa por CPF no Node/gRPC
+        $response = Http::get('http://localhost:3000/buscar-pessoa-por-cpf', [
+            'cpf' => $request->cpf
         ]);
+
+        if (!$response->successful()) {
+            return back()->with('error', 'Erro ao buscar pessoa pelo CPF');
+        }
+
+        $pessoa = $response->json();
+        if (!isset($pessoa['id'])) {
+            return back()->with('error', 'Pessoa não encontrada');
+        }
+
+        // 2 - Adicionar ID ao request e enviar eleitor
+        $dadosEleitor = $request->all();
+        $dadosEleitor['id'] = $pessoa['id'];
+
+        $eleitorResponse = Http::post('http://localhost:3000/enviar-eleitor', $dadosEleitor);
+
+        if ($eleitorResponse->successful()) {
+            return back()->with('success', 'Eleitor cadastrado com sucesso!');
+        } else {
+            return back()->with('error', 'Erro ao enviar eleitor para o serviço Node.js');
+        }
     }
 
     public function votar(){
@@ -60,6 +83,6 @@ class IndexController extends Controller
             ],
             'ativa' => true
         ];
-        return view('eleicao.votar', compact('eleicao'));
+        return view('eleicao.votacao', compact('eleicao'));
     }
 }
