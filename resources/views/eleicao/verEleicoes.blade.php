@@ -22,7 +22,7 @@
                             </p>
                             <div class="d-flex gap-2">
                                 <button class="btn btn-sm btn-outline-primary">Ver Detalhes</button>
-                                <button class="btn btn-sm btn-primary" onclick="window.location.href='{{ route('ver.resultado') }}';" style="cursor:pointer;">Ver Resultado</button>
+                                <button class="btn btn-sm btn-primary" onclick="window.location.href='{{ route('ver.resultado', ['id' => 2]) }}';" style="cursor:pointer;">Ver Resultado</button>
                                 @if(auth()->check() && auth()->user()->admin)
                                     <button class="btn btn-sm btn-outline-secondary">Modificar Eleição</button>
                                 @endif 
@@ -34,5 +34,5 @@
             </div>
         </div>
     </div>
-</div>    
+</div>
 @endsection

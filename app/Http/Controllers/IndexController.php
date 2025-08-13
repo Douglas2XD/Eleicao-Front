@@ -9,8 +9,26 @@ use Illuminate\Support\Facades\Http;
 class IndexController extends Controller
 {
     public function criarEleicao(){
-        Gate::authorize('criar-eleicao');
         return view('eleicao.criarEleicao');
+    }
+
+    public function salvarEleicao(Request $request){
+        try {
+            $response = Http::timeout(30)->post('http://localhost:3000/criar-eleicao', [
+                'titulo' => $request->titulo,
+                'descricao' => $request->descricao,
+                'data_start' => $request->data_start,
+                'data_final' => $request->data_final
+            ]);
+
+            if (!$response->successful()) {
+                return back()->with('error', 'Erro ao criar eleição: ' . $response->body());
+            }
+
+            return back()->with('success', 'Eleição criada com sucesso!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Erro ao criar eleição: ' . $e->getMessage());
+        }
     }
 
     public function verEleicoes(){
@@ -30,7 +48,7 @@ class IndexController extends Controller
     }
 
     public function verEleicaoAtiva(){
-        return view('eleicao.eleicaoAtiva');
+        return view('eleicao.verEleicaoAtiva');
     }
     
     public function registrarEleitor(Request $request){
@@ -60,6 +78,41 @@ class IndexController extends Controller
             return back()->with('error', 'Erro ao enviar eleitor para o serviço Node.js');
         }
     }
+
+    public function autenticarEleitor(Request $request)
+    {
+        try {
+            $response = Http::timeout(30)->get('http://localhost:3000/buscar-pessoa-por-cpf', [
+                'cpf' => $request->cpf
+            ]);
+
+            if (!$response->successful()) {
+                return back()->with('error', 'Erro ao buscar pessoa: ' . $response->body());
+            }
+
+            $pessoa = $response->json()['pessoa'] ?? null;
+            if (!$pessoa) {
+                return back()->with('error', 'Pessoa não encontrada no serviço.');
+            }
+
+            // Armazena na sessão
+            session(['eleitor' => $pessoa]);
+
+            // Regenera o ID da sessão por segurança
+            $request->session()->regenerate();
+
+            return redirect()->route('dashboard');
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Erro na comunicação: ' . $e->getMessage());
+        }
+    }
+
+    public function logoutEleitor() {
+        session()->flush();
+        return redirect()->route('eleitor.registrar');
+    }
+
 
     public function votar(){
         $eleicao = [

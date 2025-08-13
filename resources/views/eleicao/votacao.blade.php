@@ -62,5 +62,53 @@
             // Add selection to clicked card
             card.classList.add('selected');
         }
+
+        async function confirmarVoto() {
+            const selectedCard = document.querySelector('.candidate-card.selected');
+            if (!selectedCard) {
+                alert('Por favor, selecione um candidato antes de confirmar o voto.');
+                return;
+            }
+
+            // Pega os dados do candidato selecionado
+            const nome = selectedCard.querySelector('h5').innerText;
+            const numero = selectedCard.querySelector('p').innerText.replace('Número: ', '').trim();
+
+            // Aqui você deve substituir esses valores pelos reais do seu sistema
+            const id_eleicao = {{ $eleicao['id'] }}; // pegando id da eleição do backend blade
+            const id_eleitor = {{session('eleitor')['id']}}; // exemplo fixo, substitua pelo ID do eleitor real
+            const id_candidato = numero; // usando o número como id do candidato (ajuste se for diferente)
+
+            const voto = {
+                id_eleicao,
+                id_eleitor,
+                id_candidato
+            };
+
+            // console.log(JSON.stringify(voto));
+
+            try {
+                const response = await fetch('http://13.221.77.151:8000/votar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(voto)
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Erro no servidor: ${errorText}`);
+                }
+
+                const result = await response.json();
+                alert('Voto enviado com sucesso!');
+                // Aqui pode redirecionar ou mudar a tela, ex:
+                // showScreen('menuScreen');
+            } catch (error) {
+                alert('Erro ao enviar voto: ' + error.message);
+                console.error(error);
+            }
+        }
     </script>
 @endsection

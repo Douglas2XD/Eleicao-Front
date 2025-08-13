@@ -64,10 +64,13 @@
                         <!-- Botões -->
                         <div class="row mt-4">
                             <div class="col-12">
-                                <div class="d-flex gap-2 justify-content-end">
-                                    <button type="button" class="btn btn-secondary">Cancelar</button>
-                                    <button type="submit" class="btn btn-primary">Salvar
-                                        Eleitor</button>
+                                <div class="d-flex gap-2 justify-content-between">
+                                    <a href="{{ route('eleitor.login') }}">Já possui um cadastro? Entrar</a>
+                                    <div>
+                                        <button type="button" class="btn btn-secondary">Cancelar</button>
+                                        <button type="submit" class="btn btn-primary">Salvar
+                                            Eleitor</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -78,7 +81,6 @@
     </div>
 </div>
 <script>
-
     // Simulação de cursos cadastrados (em um caso real, isso viria de uma API)
     const cursosDisponiveis = [{
             id: 1,
