@@ -160,7 +160,7 @@ class IndexController extends Controller
 
     public function votar(){
         $eleicao = [
-            'id' => "teste01eleicao",
+            'id' => "2",
             'candidatos' => [
                 [
                     'id' => "candidato1",
