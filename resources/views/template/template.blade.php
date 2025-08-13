@@ -14,7 +14,7 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{{ url('dashboard') }}">
             <i class="fas fa-vote-yea me-2"></i>URNA IFRN
         </a>
         <div class="navbar-nav ms-auto">

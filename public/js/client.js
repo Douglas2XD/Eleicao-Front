@@ -67,6 +67,10 @@ app.get('/buscar-pessoa-por-cpf', (req, res) => {
 });
 
 app.post('/enviar-eleitor', (req, res) => {
+    const client_eleitor = new proto.sysele.SistemaVotacaoService(
+        '18.118.122.201:8000',
+        grpc.credentials.createInsecure()
+    );
     let eleitorRaw = { ...req.body };
     console.log('Recebido do Laravel (raw):', eleitorRaw);
 

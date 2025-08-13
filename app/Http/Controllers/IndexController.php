@@ -39,8 +39,15 @@ class IndexController extends Controller
     }
 
     public function resultado(){
-        $id_eleicao = 'teste01eleicao';
-        return view('eleicao.resultadoEleicao', compact('id_eleicao'));
+        $url = 'http://3.21.56.39:8000/eleicao/ver-resultado/2';
+
+        $response = Http::get($url);
+        if ($response->successful()) {
+            $dados = $response->json();
+            return view('eleicao.resultadoEleicao', compact('dados'));
+        }
+
+        # return view('eleicao.resultadoEleicao',compact('response'));
     }
 
     public function verEleicaoAtiva(){
