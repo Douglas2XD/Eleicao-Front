@@ -75,7 +75,7 @@
             const numero = selectedCard.querySelector('p').innerText.replace('Número: ', '').trim();
 
             // Aqui você deve substituir esses valores pelos reais do seu sistema
-            const id_eleicao = {{ $eleicao['id'] }}; // pegando id da eleição do backend blade
+            const id_eleicao = '{{ $eleicao['id'] }}'; // pegando id da eleição do backend blade
             const id_eleitor = {{session('eleitor')['id']}}; // exemplo fixo, substitua pelo ID do eleitor real
             const id_candidato = numero; // usando o número como id do candidato (ajuste se for diferente)
 
@@ -97,8 +97,8 @@
                 });
 
                 if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Erro no servidor: ${errorText}`);
+                    const errorText = await response.json();
+                    throw new Error(errorText.detail);
                 }
 
                 const result = await response.json();
